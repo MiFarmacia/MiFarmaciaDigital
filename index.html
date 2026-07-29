@@ -17,6 +17,7 @@
             --text-muted: #9ca3af;
             --success: #10b981;
             --danger: #ff1744;
+            --warning: #f59e0b;
             --radius-xl: 24px;
             --radius-md: 12px;
         }
@@ -35,9 +36,48 @@
             background: #030712 linear-gradient(145deg, #030712 0%, #0b1329 100%); 
             color: var(--text-main); 
             min-height: 100vh; 
-            padding-bottom: 120px;
+            padding-bottom: 140px;
             overflow-x: hidden;
             font-size: 16px;
+        }
+
+        /* BANNER PREVENTIVO CIERRE */
+        .banner-preventivo {
+            background: #f59e0b;
+            color: #000;
+            text-align: center;
+            padding: 8px 12px;
+            font-weight: 700;
+            font-size: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 101;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* PANTALLA DE BLOQUEO TOTAL FUERA DE HORARIO */
+        #modalBloqueoHorario {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #030712;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .bloqueo-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(2, 249, 10, 0.3);
+            border-radius: 20px;
+            padding: 32px 24px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 0 30px rgba(2, 249, 10, 0.15);
+            backdrop-filter: blur(12px);
         }
         
         header { 
@@ -121,7 +161,7 @@
             text-overflow: ellipsis;
         }
 
-        #btnPerfilToggle, #btnAuth, #btnCarrito {
+        #btnPerfilToggle, #btnAuth, #btnCarrito, #btnPedidos, #btnHistorialHeader {
             font-size: 11px;
             padding: 8px 10px !important;
             white-space: nowrap;
@@ -165,9 +205,10 @@
         .search-box { 
             width: 100%; 
             display: flex; 
+            align-items: center;
             gap: 8px; 
             background: var(--bg-card); 
-            padding: 8px; 
+            padding: 4px 8px; 
             border-radius: 10px; 
             border: 1px solid rgba(2, 249, 10, 0.2);
         }
@@ -177,7 +218,7 @@
             background: transparent; 
             border: none; 
             outline: none; 
-            padding: 10px; 
+            padding: 10px 4px; 
             color: #fff; 
             font-size: 14px;
             min-width: 0;
@@ -187,6 +228,19 @@
             font-size: 13px;
             color: var(--text-muted);
         }
+
+        .search-box-clear {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px 8px;
+            display: none;
+            transition: color 0.2s;
+        }
+
+        .search-box-clear:hover { color: #fff; }
 
         .search-wrapper { position: relative; }
 
@@ -252,7 +306,6 @@
             box-shadow: 0 0 8px rgba(2, 249, 10, 0.2);
         }
 
-        /* PAGINACIÓN MEJORADA Y VISIBLE */
         .pagination-container {
             display: flex;
             flex-direction: column;
@@ -346,7 +399,7 @@
             width: 100%; 
             height: 120px; 
             object-fit: contain; 
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .card h3 { 
@@ -432,15 +485,6 @@
         .btn-danger { background: var(--danger); color: white; }
         .btn-success { background: var(--success); color: white; }
 
-        .side-panel { 
-            display: none;
-            flex-direction: column; 
-            gap: 12px;
-            padding: 12px 3%;
-        }
-
-        .side-panel.active { display: flex; }
-
         .panel-box { 
             background: var(--bg-card); 
             border-radius: 12px; 
@@ -471,6 +515,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .panel-close-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
         }
 
         .cart-item { 
@@ -525,6 +574,56 @@
             font-size: 13px;
         }
 
+        /* --- ESTILOS DE MODALES FLOTANTES IGUALES AL CARRITO --- */
+        .modal-overlay-custom {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .modal-overlay-custom.active {
+            display: flex;
+        }
+
+        .modal-card-custom {
+            background: #0b1120;
+            border: 1px solid rgba(2, 249, 10, 0.35);
+            border-radius: 18px;
+            padding: 20px;
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 0 30px rgba(2, 249, 10, 0.15);
+            animation: toastIn 0.25s ease-out;
+            max-height: 85vh;
+            overflow-y: auto;
+            color: #fff;
+        }
+
+        .modal-header-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .modal-title-custom {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+        }
+
         #modalAuth { 
             display: none; 
             position: fixed; 
@@ -561,6 +660,8 @@
             width: 100%;
             max-width: 500px;
             margin: auto;
+            border: 1px solid rgba(2, 249, 10, 0.35);
+            box-shadow: 0 0 30px rgba(2, 249, 10, 0.15);
         }
 
         #generatedTicket { 
@@ -580,12 +681,12 @@
 
         .whatsapp-float {
             position: fixed;
-            bottom: 96px;
+            bottom: 80px;
             right: 16px;
             background: #25D366;
             color: white;
-            width: 52px;
-            height: 52px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -613,9 +714,274 @@
             color: var(--text-muted);
             margin: 3px 0 6px 0;
         }
+
+        /* --- NOTIFICACIONES TOAST --- */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 360px;
+            width: calc(100% - 40px);
+            pointer-events: none;
+        }
+
+        .toast {
+            pointer-events: auto;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: #0b1120;
+            color: #fff;
+            border: 1px solid rgba(2, 249, 10, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.4;
+            animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            backdrop-filter: blur(12px);
+        }
+
+        .toast.hide {
+            animation: toastOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .toast-success { border-color: var(--success); box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
+        .toast-danger { border-color: var(--danger); box-shadow: 0 0 15px rgba(255, 23, 68, 0.2); }
+        .toast-warning { border-color: var(--warning); box-shadow: 0 0 15px rgba(245, 158, 11, 0.2); }
+        .toast-info { border-color: var(--primary); box-shadow: 0 0 15px rgba(2, 249, 10, 0.2); }
+
+        @keyframes toastIn {
+            from { transform: translateY(-20px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        @keyframes toastOut {
+            from { transform: translateY(0) scale(1); opacity: 1; }
+            to { transform: translateY(-20px) scale(0.9); opacity: 0; }
+        }
+
+        /* --- SKELETONS Y SPINNERS --- */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.12) 37%, rgba(255, 255, 255, 0.04) 63%);
+            background-size: 400% 100%;
+            animation: skeleton-shimmer 1.4s ease infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-shimmer {
+            0% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .skeleton-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            height: 230px;
+        }
+
+        .skeleton-img { width: 100%; height: 100px; }
+        .skeleton-title { width: 70%; height: 14px; }
+        .skeleton-text { width: 90%; height: 10px; }
+        .skeleton-btn { width: 40%; height: 32px; border-radius: 8px; margin-top: auto; align-self: flex-end; }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: currentColor;
+            animation: spin 0.8s linear infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- BARRA DE NAVEGACIÓN INFERIOR (BOTTOM NAV BAR) --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 62px;
+            background: rgba(3, 7, 18, 0.96);
+            backdrop-filter: blur(14px);
+            border-top: 1px solid rgba(2, 249, 10, 0.25);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 800;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            flex: 1;
+            padding: 6px 0;
+            transition: color 0.2s;
+        }
+
+        .bottom-nav-item:hover, .bottom-nav-item.active { color: var(--primary); }
+        .bottom-nav-item .nav-icon { font-size: 18px; margin-bottom: 2px; }
+
+        /* --- EFECTO REBOTE (PULSE) --- */
+        .pulse-animation {
+            animation: pulseKeyframes 0.38s ease-in-out;
+        }
+
+        @keyframes pulseKeyframes {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.35); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- MODAL VISTA RÁPIDA (QUICK VIEW) --- */
+        #modalQuickView {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(10px);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        #modalQuickView.active { display: flex; }
+
+        .quickview-card {
+            background: #0b1120;
+            border: 1px solid rgba(2, 249, 10, 0.35);
+            border-radius: 18px;
+            padding: 20px;
+            max-width: 440px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 0 30px rgba(2, 249, 10, 0.15);
+            animation: toastIn 0.25s ease-out;
+        }
+
+        /* --- LÍNEA DE TIEMPO INTERACTIVA DE RASTREO --- */
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 18px 0 10px 0;
+            position: relative;
+        }
+
+        .timeline-line-bg {
+            position: absolute;
+            top: 15px;
+            left: 12%;
+            right: 12%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+
+        .timeline-line-active {
+            position: absolute;
+            top: 15px;
+            left: 12%;
+            height: 3px;
+            background: var(--primary);
+            z-index: 1;
+            transition: width 0.4s ease;
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        .timeline-step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            width: 25%;
+            text-align: center;
+        }
+
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #0b1120;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-step.completed .step-icon, .timeline-step.active .step-icon {
+            border-color: var(--primary);
+            background: rgba(2, 249, 10, 0.2);
+            color: var(--primary);
+            box-shadow: 0 0 10px rgba(2, 249, 10, 0.4);
+        }
+
+        .timeline-step.active .step-icon {
+            animation: pulseKeyframes 1.5s infinite;
+        }
+
+        .timeline-step.completed, .timeline-step.active {
+            color: var(--text-main);
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
+
+    <!-- CONTENEDOR DE TOASTS -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- BANNER PREVENTIVO -->
+    <div id="bannerPreventivo" class="banner-preventivo" style="display:none;">
+        ⚠️ Recuerda que cerramos pedidos a las 7:00 PM. <span id="txtTiempoRestante"></span>
+    </div>
+
+    <!-- PANTALLA DE BLOQUEO TOTAL -->
+    <div id="modalBloqueoHorario">
+        <div class="bloqueo-card">
+            <div style="font-size: 56px; margin-bottom: 16px;">🌙</div>
+            <h2 style="color: var(--primary); font-size: 20px; font-weight: 800; margin-bottom: 12px;">Servicio Cerrado</h2>
+            <p style="color: var(--text-main); font-size: 14px; line-height: 1.5; margin-bottom: 12px;">
+                Nuestro servicio de pedidos en línea está disponible de <strong>9:00 AM a 7:00 PM</strong> (Hora del Centro de México).
+            </p>
+            <p style="color: var(--text-muted); font-size: 12px;">
+                ¡Te esperamos mañana a primera hora para atenderte!
+            </p>
+        </div>
+    </div>
 
     <header>
         <div class="logo">🧬 Mi<span>Farmacia</span></div>
@@ -630,7 +996,8 @@
 
         <div class="header-right">
             <span id="lblSaludo">Invitado</span>
-            <button id="btnPedidos" class="btn" style="background:rgba(255,255,255,0.05); color:white; display:none;" onclick="abrirSidePanel()">📦</button>
+            <button id="btnPedidos" class="btn" style="background:rgba(255,255,255,0.05); color:white; display:none;" onclick="abrirModalRastreo()" title="Rastrear Pedido">📦</button>
+            <button id="btnHistorialHeader" class="btn" style="background:rgba(255,255,255,0.05); color:white; display:none;" onclick="abrirModalHistorial()" title="Mis Pedidos">📋</button>
             <button id="btnPerfilToggle" class="btn" style="background:rgba(255,255,255,0.05); color:white; display:none;" onclick="togglePanelPerfil()">⚙️</button>
             <button id="btnCarrito" class="btn" style="display:none;" onclick="abrirCarrito()">
                 🛒
@@ -644,8 +1011,23 @@
         <section class="catalog-section">
             <div class="search-wrapper">
                 <div class="search-box">
-                    <input type="text" id="txtBuscar" placeholder="🔍 Buscar medicamento" autocomplete="off" oninput="manejarBusquedaInput()" onfocus="manejarBusquedaInput()">
+                    <input type="text" id="txtBuscar" placeholder="🔍 Buscar medicamento o código" autocomplete="off" oninput="manejarBusquedaInput()" onfocus="manejarBusquedaInput()">
+                    <button type="button" id="btnLimpiarBuscador" class="search-box-clear" onclick="limpiarBuscador()">✕</button>
                 </div>
+                
+                <!-- Filtros de Precio y Ordenamiento Dinámico -->
+                <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
+                    <input type="number" id="txtPrecioMin" placeholder="Precio Min $" style="flex:1; min-width:90px; padding:8px; background:var(--bg-input); color:#fff; border:1px solid rgba(2,249,10,0.2); border-radius:8px; font-size:12px;" oninput="filtrarCatalogoCompleto()">
+                    <input type="number" id="txtPrecioMax" placeholder="Precio Max $" style="flex:1; min-width:90px; padding:8px; background:var(--bg-input); color:#fff; border:1px solid rgba(2,249,10,0.2); border-radius:8px; font-size:12px;" oninput="filtrarCatalogoCompleto()">
+                    <select id="cmbOrdenamiento" onchange="filtrarCatalogoCompleto()" style="flex:1.2; min-width:130px; padding:8px; background:var(--bg-input); color:var(--primary); font-weight:600; border:1px solid rgba(2,249,10,0.2); border-radius:8px; font-size:12px; outline:none; cursor:pointer;">
+                        <option value="defecto">Ordenar: Defecto</option>
+                        <option value="precioAsc">Precio: Menor a Mayor</option>
+                        <option value="precioDesc">Precio: Mayor a Menor</option>
+                        <option value="nombreAsc">Nombre: A - Z</option>
+                        <option value="nombreDesc">Nombre: Z - A</option>
+                    </select>
+                </div>
+                
                 <div id="sugerenciasBusqueda" class="search-suggestions"></div>
             </div>
             
@@ -672,42 +1054,79 @@
                     <label>Favoritos</label>
                     <input type="text" id="txtPrefFavoritos" placeholder="PAR-001, AMX-002">
                 </div>
-                <button class="btn btn-success full-width" style="margin-bottom:10px; justify-content:center;" onclick="guardarDatosPerfilServidor()">💾 Guardar</button>
+                <button id="btnGuardarPerfil" class="btn btn-success full-width" style="margin-bottom:10px; justify-content:center;" onclick="guardarDatosPerfilServidor()">💾 Guardar</button>
             </div>
 
             <div class="grid-products" id="catalogGrid"></div>
             
-            <!-- CONTENEDOR DE PAGINACIÓN MEJORADO -->
+            <!-- CONTENEDOR DE PAGINACIÓN -->
             <div id="paginationContainerWrapper" class="pagination-container" style="display: none;">
                 <div class="pagination-info" id="paginationInfoText">Mostrando página 1 de 1</div>
                 <div id="paginationTabsContainerBottom" class="pagination-tabs"></div>
             </div>
         </section>
+    </main>
 
-        <section class="side-panel" id="sidePanel">
-            <div class="panel-box">
-                <div class="panel-title">
-                    📦 Rastreo
-                    <button class="panel-close-btn" onclick="cerrarSidePanel()">✕</button>
-                </div>
-                <div style="display:flex; gap:6px; margin-bottom:0;">
-                    <input type="text" id="txtRastreoFolio" placeholder="Folio (FH-XXXXXX)" style="flex:1; min-width:0; padding:9px; background:var(--bg-input); border:1px solid rgba(2,249,10,0.2); border-radius:8px; color:#fff; font-size:12px; outline:none;">
+    <!-- VENTANA FLOTANTE: RASTREAR PEDIDO -->
+    <div id="modalRastreo" class="modal-overlay-custom">
+        <div class="modal-card-custom">
+            <div class="modal-header-custom">
+                <h3 class="modal-title-custom">📦 Rastreo de Pedido</h3>
+                <button class="panel-close-btn" onclick="cerrarModalRastreo()">✕</button>
+            </div>
+            <div>
+                <div style="display:flex; gap:6px; margin-bottom:12px;">
+                    <input type="text" id="txtRastreoFolio" placeholder="Folio (FH-XXXXXX)" style="flex:1; min-width:0; padding:10px; background:var(--bg-input); border:1px solid rgba(2,249,10,0.2); border-radius:8px; color:#fff; font-size:13px; outline:none;">
                     <button class="btn" onclick="consultarRastreoInterno()" style="flex-shrink:0;">Buscar</button>
                 </div>
                 <div id="panelStatusScreen" style="margin-top:10px; font-size:12px; text-align:center; color:var(--text-muted);">
                     Ingresa tu folio para rastrear.
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="panel-box">
-                <div class="panel-title">📜 Mis Pedidos</div>
-                <button class="btn full-width" style="margin-bottom:10px; justify-content:center;" onclick="cargarHistorialPedidos()">🔄 Actualizar Historial</button>
+    <!-- VENTANA FLOTANTE: HISTORIAL DE PEDIDOS -->
+    <div id="modalHistorial" class="modal-overlay-custom">
+        <div class="modal-card-custom">
+            <div class="modal-header-custom">
+                <h3 class="modal-title-custom">📜 Mis Pedidos e Historial</h3>
+                <button class="panel-close-btn" onclick="cerrarModalHistorial()">✕</button>
+            </div>
+            <div>
+                <button class="btn full-width" style="margin-bottom:12px; justify-content:center;" onclick="cargarHistorialPedidos()">🔄 Actualizar Historial</button>
                 <div id="historialPedidosContainer" style="font-size:12px; color:var(--text-muted);">
                     Inicia sesión y presiona actualizar para ver tus pedidos.
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+
+    <!-- MODAL VISTA RÁPIDA (QUICK VIEW) -->
+    <div id="modalQuickView">
+        <div class="quickview-card">
+            <div class="panel-title" style="margin-bottom:10px;">
+                <span>👁️ Vista Rápida del Producto</span>
+                <button class="panel-close-btn" onclick="cerrarQuickView()">✕</button>
+            </div>
+            <div style="text-align:center; margin-bottom:12px; background:rgba(255,255,255,0.02); padding:10px; border-radius:12px;">
+                <img id="qvImg" src="" style="max-height:150px; max-width:100%; object-fit:contain; border-radius:8px;">
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span id="qvCodigo" style="background:rgba(2,249,10,0.1); color:var(--primary); font-family:monospace; font-weight:700; padding:3px 8px; border-radius:6px; border:1px solid rgba(2,249,10,0.3); font-size:11px;">COD: -</span>
+                <span id="qvCategoria" style="font-size:11px; color:var(--text-muted); background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:6px;">Categoría</span>
+            </div>
+            <h3 id="qvNombre" style="font-size:15px; font-weight:800; color:#fff; margin-bottom:6px; line-height:1.3;"></h3>
+            <p id="qvDescripcion" style="font-size:12px; color:var(--text-muted); margin-bottom:16px; line-height:1.4; max-height:80px; overflow-y:auto;"></p>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px;">
+                <div>
+                    <span id="qvPrecio" class="price" style="font-size:20px;">$0.00</span>
+                    <div id="qvStock" style="font-size:11px; color:var(--success); font-weight:600;">Stock: 0</div>
+                </div>
+                <button id="qvBtnAgregar" class="btn" onclick="">🛒 Agregar al Carrito</button>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL CARRITO -->
     <div id="modalCarrito">
@@ -733,13 +1152,17 @@
                     <input type="text" id="orderDomicilio">
                 </div>
                 <div class="input-group">
+                    <label>Receta Médica Adjunta (Opcional - Imagen/PDF)</label>
+                    <input type="file" id="orderReceta" accept="image/*,.pdf" style="padding: 6px;">
+                </div>
+                <div class="input-group">
                     <label>Método de Pago Preferido</label>
                     <select id="orderMetodoPago">
                         <option value="Efectivo">Efectivo al recibir</option>
                         <option value="Tarjeta">Terminal Portátil (Tarjeta)</option>
                     </select>
                 </div>
-                <button class="btn btn-success full-width" style="justify-content:center; margin-bottom:8px;" onclick="procesarOrdenCompraFinal(event)">🚀 Confirmar y Enviar Pedido</button>
+                <button id="btnConfirmarOrden" class="btn btn-success full-width" style="justify-content:center; margin-bottom:8px;" onclick="procesarOrdenCompraFinal(event)">🚀 Confirmar y Enviar Pedido</button>
             </div>
             <div id="checkoutAnonMessage" style="text-align:center; font-size:12px; color:var(--text-muted); padding:10px;">
                 Debes tener una cuenta activa para procesar compras.
@@ -767,7 +1190,7 @@
                     <label>Contraseña Secreta</label>
                     <input type="password" id="loginPass">
                 </div>
-                <button class="btn full-width" style="margin-bottom:12px; justify-content:center;" onclick="ejecutarIngresoBase()">Ingresar al Sistema</button>
+                <button id="btnEjecutarIngreso" class="btn full-width" style="margin-bottom:12px; justify-content:center;" onclick="ejecutarIngresoBase()">Ingresar al Sistema</button>
                 <p style="font-size:12px; text-align:center; color:var(--text-muted);">¿Eres nuevo? <a href="#" style="color:var(--primary); font-weight:700;" onclick="event.preventDefault(); conmutarAuthView(true)">Regístrate aquí</a></p>
             </div>
 
@@ -784,7 +1207,7 @@
                     <label>Contraseña</label>
                     <input type="password" id="regPass">
                 </div>
-                <button class="btn btn-success full-width" style="margin-bottom:12px; justify-content:center;" onclick="ejecutarRegistroBase()">Crear Mi Cuenta</button>
+                <button id="btnEjecutarRegistro" class="btn btn-success full-width" style="margin-bottom:12px; justify-content:center;" onclick="ejecutarRegistroBase()">Crear Mi Cuenta</button>
                 <p style="font-size:12px; text-align:center; color:var(--text-muted);">¿Ya tienes cuenta? <a href="#" style="color:var(--primary); font-weight:700;" onclick="event.preventDefault(); conmutarAuthView(false)">Inicia sesión</a></p>
             </div>
 
@@ -792,7 +1215,36 @@
         </div>
     </div>
 
-    <a id="btnWhatsApp" class="whatsapp-float" href="https://wa.me/525500000000?text=Hola%2C%20tengo%20una%20duda%20sobre%20mi%20pedido%20en%20MiFarmacia" target="_blank" rel="noopener" title="Chatea con soporte">💬</a>
+    <!-- BARRA DE NAVEGACIÓN INFERIOR FIJA (BOTTOM NAV BAR) -->
+    <nav class="bottom-nav">
+        <button class="bottom-nav-item" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <span class="nav-icon">🏠</span>
+            <span>Inicio</span>
+        </button>
+        <button class="bottom-nav-item" onclick="focusBuscador()">
+            <span class="nav-icon">🔍</span>
+            <span>Buscar</span>
+        </button>
+        <button class="bottom-nav-item" onclick="abrirModalRastreo()">
+            <span class="nav-icon">📦</span>
+            <span>Rastreo</span>
+        </button>
+        <button class="bottom-nav-item" onclick="abrirModalHistorial()">
+            <span class="nav-icon">📋</span>
+            <span>Historial</span>
+        </button>
+        <button class="bottom-nav-item" onclick="abrirCarrito()">
+            <span class="nav-icon">🛒</span>
+            <span>Carrito</span>
+            <span class="cart-badge" id="cartCounterBottom" style="display:none; top:-4px; right:12px;">0</span>
+        </button>
+        <button class="bottom-nav-item" onclick="sesionUsuario ? togglePanelPerfil() : abrirModalAuth()">
+            <span class="nav-icon">👤</span>
+            <span>Perfil</span>
+        </button>
+    </nav>
+
+    <a id="btnWhatsApp" class="whatsapp-float" href="https://wa.me/525572400294?text=Hola%2C%20tengo%20una%20duda%20sobre%20mi%20pedido%20en%20MiFarmacia" target="_blank" rel="noopener" title="Chatea con soporte">💬</a>
 
     <script>
         let SCRIPT_URL = localStorage.getItem("backend_url") || 'https://script.google.com/macros/s/AKfycbyLXqTjgY_fnUKTEKbaBH9w-h880eZoAqQGoTPa6q_PSUJ53SFq21aFsm7MdZv3E4lLAA/exec';
@@ -805,7 +1257,132 @@
         let paginaActual = 1;
         const productosPorPagina = 10;
 
+        /* SISTEMA DE NOTIFICACIONES TOAST */
+        function showToast(message, type = 'info', duration = 3800) {
+            const container = document.getElementById('toastContainer');
+            if(!container) return;
+            
+            const toast = document.createElement('div');
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✅';
+            if (type === 'danger') icon = '❌';
+            if (type === 'warning') icon = '⚠️';
+
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<span style="font-size:16px;">${icon}</span><div style="flex:1;">${message.replace(/\n/g, '<br>')}</div>`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('hide');
+                toast.addEventListener('animationend', () => {
+                    toast.remove();
+                });
+            }, duration);
+        }
+
+        /* EFECTO REBOTE (PULSE) EN EL CARRITO */
+        function aplicarEfectoRebote() {
+            const btnHeader = document.getElementById("btnCarrito");
+            const badges = document.querySelectorAll(".cart-badge");
+            
+            if(btnHeader) {
+                btnHeader.classList.remove("pulse-animation");
+                void btnHeader.offsetWidth; // Trigger reflow
+                btnHeader.classList.add("pulse-animation");
+            }
+
+            badges.forEach(b => {
+                b.classList.remove("pulse-animation");
+                void b.offsetWidth;
+                b.classList.add("pulse-animation");
+            });
+
+            setTimeout(() => {
+                if(btnHeader) btnHeader.classList.remove("pulse-animation");
+                badges.forEach(b => b.classList.remove("pulse-animation"));
+            }, 400);
+        }
+
+        /* BOTÓN LIMPIAR BUSCADOR Y FOCUS */
+        function limpiarBuscador() {
+            document.getElementById("txtBuscar").value = "";
+            document.getElementById("btnLimpiarBuscador").style.display = "none";
+            document.getElementById("sugerenciasBusqueda").style.display = "none";
+            paginaActual = 1;
+            filtrarCatalogoCompleto();
+        }
+
+        function focusBuscador() {
+            const el = document.getElementById("txtBuscar");
+            if(el) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                el.focus();
+            }
+        }
+
+        /* MOSTRAR SKELETONS EN EL CATÁLOGO */
+        function mostrarSkeletonsCatalogo() {
+            const grid = document.getElementById("catalogGrid");
+            grid.innerHTML = Array(6).fill(0).map(() => `
+                <div class="skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-btn"></div>
+                </div>
+            `).join("");
+        }
+
+        /* FUNCIONES DE GESTIÓN DE HORARIO UNIFICADO (CDMX / HORA CENTRO) */
+        function obtenerHoraMexico() {
+            const ahora = new Date();
+            const opciones = { timeZone: 'America/Mexico_City', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const partesHora = new Intl.DateTimeFormat('en-US', opciones).formatToParts(ahora);
+            
+            let h = 0, m = 0, s = 0;
+            partesHora.forEach(p => {
+                if (p.type === 'hour') h = parseInt(p.value, 10);
+                if (p.type === 'minute') m = parseInt(p.value, 10);
+                if (p.type === 'second') s = parseInt(p.value, 10);
+            });
+            return { h, m, s, totalMinutos: h * 60 + m };
+        }
+
+        function verificarHorarioOperacion() {
+            const time = obtenerHoraMexico();
+            const minActual = time.totalMinutos;
+            
+            const minInicio = 9 * 60;      // 9:00 AM (540 min)
+            const minFin = 19 * 60;        // 7:00 PM (1140 min)
+            const minAviso = 18 * 60 + 30; // 6:30 PM (1110 min)
+
+            const modalBloqueo = document.getElementById("modalBloqueoHorario");
+            const banner = document.getElementById("bannerPreventivo");
+            const txtTiempo = document.getElementById("txtTiempoRestante");
+
+            if (minActual < minInicio || minActual >= minFin) {
+                if (modalBloqueo) modalBloqueo.style.display = "flex";
+                if (banner) banner.style.display = "none";
+                return false;
+            } else {
+                if (modalBloqueo) modalBloqueo.style.display = "none";
+                
+                if (minActual >= minAviso && minActual < minFin) {
+                    const minsRestantes = minFin - minActual;
+                    if (banner) banner.style.display = "block";
+                    if (txtTiempo) txtTiempo.innerText = `Quedan ${minsRestantes} min para el cierre de pedidos.`;
+                } else {
+                    if (banner) banner.style.display = "none";
+                }
+                return true;
+            }
+        }
+
         window.onload = async () => {
+            verificarHorarioOperacion();
+            setInterval(verificarHorarioOperacion, 5000);
+
             await descargarCatalogo();
             verificarCacheSesion();
             
@@ -813,6 +1390,9 @@
                 const wrapper = document.querySelector(".search-wrapper");
                 if(wrapper && !wrapper.contains(e.target)) {
                     document.getElementById("sugerenciasBusqueda").style.display = "none";
+                }
+                if(e.target.classList.contains("modal-overlay-custom")) {
+                    e.target.classList.remove("active");
                 }
             });
         };
@@ -832,7 +1412,7 @@
 
         async function alternarFavorito(codigo, event) {
             event.stopPropagation();
-            if(!sesionUsuario) { alert("Inicia sesión para guardar favoritos."); return; }
+            if(!sesionUsuario) { showToast("Inicia sesión para guardar favoritos.", "warning"); return; }
             let favoritos = obtenerListaFavoritos();
             if(favoritos.includes(codigo)) {
                 favoritos = favoritos.filter(c => c !== codigo);
@@ -856,6 +1436,7 @@
         }
 
         async function descargarCatalogo() {
+            mostrarSkeletonsCatalogo();
             try {
                 const response = await fetch(`${SCRIPT_URL}?action=productos&sucursal=${sucursalSeleccionada}`);
                 const data = await response.json();
@@ -864,6 +1445,7 @@
                 filtrarCatalogoCompleto();
             } catch(e) { 
                 console.error("Error cargando productos:", e); 
+                showToast("Error al conectar con el servidor de catálogo.", "danger");
             }
         }
 
@@ -873,7 +1455,7 @@
             grid.innerHTML = "";
             
             if(listado.length === 0) {
-                grid.innerHTML = `<p style="color:var(--text-muted); grid-column:1/-1; text-align:center; padding: 20px 0;">No se encontraron medicamentos.</p>`;
+                grid.innerHTML = `<p style="color:var(--text-muted); grid-column:1/-1; text-align:center; padding: 20px 0;">No se encontraron medicamentos en este rango o búsqueda.</p>`;
                 paginationWrapper.style.display = "none";
                 return;
             }
@@ -885,17 +1467,14 @@
             const fin = inicio + productosPorPagina;
             const productosPaginados = listado.slice(inicio, fin);
 
-            // Mostrar u ocultar contenedor de paginación según cantidad de páginas
             if (totalPaginas > 1) {
                 paginationWrapper.style.display = "flex";
                 document.getElementById("paginationInfoText").innerText = `Página ${paginaActual} de ${totalPaginas} (${listado.length} productos)`;
                 
                 let tabsHtml = "";
                 
-                // Botón Anterior
                 tabsHtml += `<button class="page-tab nav-arrow" ${paginaActual === 1 ? 'disabled' : ''} onclick="cambiarPagina(${paginaActual - 1})">❮</button>`;
                 
-                // Generación de pestañas numéricas con elipsis condicional para catálogos extensos
                 for (let i = 1; i <= totalPaginas; i++) {
                     if (i === 1 || i === totalPaginas || (i >= paginaActual - 1 && i <= paginaActual + 1)) {
                         tabsHtml += `<button class="page-tab ${i === paginaActual ? 'active' : ''}" onclick="cambiarPagina(${i})">${i}</button>`;
@@ -904,7 +1483,6 @@
                     }
                 }
                 
-                // Botón Siguiente
                 tabsHtml += `<button class="page-tab nav-arrow" ${paginaActual === totalPaginas ? 'disabled' : ''} onclick="cambiarPagina(${paginaActual + 1})">❯</button>`;
                 
                 document.getElementById("paginationTabsContainerBottom").innerHTML = tabsHtml;
@@ -923,16 +1501,20 @@
                         <button class="fav-btn ${favActivo ? 'active' : ''}" onclick="alternarFavorito('${p.codigo}', event)" title="${favActivo ? 'Quitar de favoritos' : 'Agregar a favoritos'}">
                             ${favActivo ? '❤️' : '🤍'}
                         </button>
-                        <img src="${pImagen}" onerror="this.src='https://via.placeholder.com/150'" alt="${p.nombre}">
+                        <img src="${pImagen}" onerror="this.src='https://via.placeholder.com/150'" alt="${p.nombre}" onclick="abrirQuickView('${p.codigo}')" style="cursor:pointer;" title="Ver vista rápida">
                         <div>
-                            <h3>${p.nombre || 'Sin nombre'}</h3>
+                            <span style="font-size:9px; color:var(--primary); font-family:monospace; display:block; margin-bottom:2px; font-weight:700;">COD: ${p.codigo || '-'}</span>
+                            <h3 onclick="abrirQuickView('${p.codigo}')" style="cursor:pointer;">${p.nombre || 'Sin nombre'}</h3>
                             <p>${p.descripcion || '-'}</p>
                         </div>
                         <div class="card-footer">
                             <span class="price">$${pPrecio.toFixed(2)}</span>
                             <div class="card-actions">
                                 <small class="card-stock ${ stockVal <= 0 ? 'low' : '' }">Stock: ${ stockVal }</small>
-                                <button class="btn" ${stockVal <= 0 ? 'disabled' : ''} onclick="meterAlCarrito('${p.codigo}', '${(p.nombre || '').replace(/'/g, "\\'")}', ${pPrecio})">🛒</button>
+                                <div style="display:flex; gap:4px;">
+                                    <button class="btn" style="padding:6px 8px; background:rgba(255,255,255,0.1); color:#fff; min-height:30px;" onclick="abrirQuickView('${p.codigo}')" title="Vista Rápida">👁️</button>
+                                    <button class="btn" ${stockVal <= 0 ? 'disabled' : ''} onclick="meterAlCarrito('${p.codigo}', '${(p.nombre || '').replace(/'/g, "\\'")}', ${pPrecio})">🛒</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -948,7 +1530,16 @@
 
         function filtrarCatalogoCompleto() {
             const txt = normalizarTexto(document.getElementById("txtBuscar").value);
-            let resultado = dbProductos;
+            
+            const minStr = document.getElementById("txtPrecioMin").value;
+            const maxStr = document.getElementById("txtPrecioMax").value;
+            const precioMin = minStr === "" ? 0 : parseFloat(minStr);
+            const precioMax = maxStr === "" ? Infinity : parseFloat(maxStr);
+
+            let resultado = dbProductos.filter(p => {
+                const price = Number(p.precio) || 0;
+                return price >= precioMin && price <= precioMax;
+            });
 
             if(filtroCategoriaActual === "Favoritos") {
                 const favoritos = obtenerListaFavoritos();
@@ -971,10 +1562,27 @@
                     return nom.includes(txt) || cod.includes(txt) || desc.includes(txt) || cat.includes(txt);
                 });
             }
+
+            /* ORDENAMIENTO DINÁMICO */
+            const orden = document.getElementById("cmbOrdenamiento") ? document.getElementById("cmbOrdenamiento").value : "defecto";
+            if(orden === "precioAsc") {
+                resultado.sort((a,b) => (Number(a.precio)||0) - (Number(b.precio)||0));
+            } else if(orden === "precioDesc") {
+                resultado.sort((a,b) => (Number(b.precio)||0) - (Number(a.precio)||0));
+            } else if(orden === "nombreAsc") {
+                resultado.sort((a,b) => (a.nombre||"").localeCompare(b.nombre||""));
+            } else if(orden === "nombreDesc") {
+                resultado.sort((a,b) => (b.nombre||"").localeCompare(a.nombre||""));
+            }
+
             renderizarPantallaCatalogo(resultado);
         }
 
         function manejarBusquedaInput() {
+            const txt = document.getElementById("txtBuscar").value;
+            const btnClear = document.getElementById("btnLimpiarBuscador");
+            if(btnClear) btnClear.style.display = txt.length > 0 ? "block" : "none";
+
             paginaActual = 1;
             filtrarCatalogoCompleto();
             mostrarSugerenciasBusqueda();
@@ -1004,6 +1612,7 @@
 
         function seleccionarSugerencia(nombre) {
             document.getElementById("txtBuscar").value = nombre;
+            document.getElementById("btnLimpiarBuscador").style.display = "block";
             document.getElementById("sugerenciasBusqueda").style.display = "none";
             paginaActual = 1;
             filtrarCatalogoCompleto();
@@ -1017,17 +1626,51 @@
             filtrarCatalogoCompleto();
         }
 
+        /* VISTA RÁPIDA (QUICK VIEW) LOGIC */
+        function abrirQuickView(codigo) {
+            const p = dbProductos.find(x => x.codigo === codigo);
+            if(!p) return;
+            
+            const stockVal = p.stock !== null && p.stock !== undefined && !isNaN(p.stock) ? Number(p.stock) : 0;
+            const pPrecio = Number(p.precio) || 0;
+            const pImagen = p.imagen && p.imagen.trim() !== "" ? p.imagen : "https://via.placeholder.com/150";
+
+            document.getElementById("qvImg").src = pImagen;
+            document.getElementById("qvNombre").innerText = p.nombre || 'Sin nombre';
+            document.getElementById("qvCodigo").innerText = `CÓDIGO: ${p.codigo || '-'}`;
+            document.getElementById("qvCategoria").innerText = p.categoria || 'General';
+            document.getElementById("qvDescripcion").innerText = p.descripcion || 'Sin descripción detallada disponible.';
+            document.getElementById("qvPrecio").innerText = `$${pPrecio.toFixed(2)}`;
+            
+            const qvStock = document.getElementById("qvStock");
+            qvStock.innerText = `Stock: ${stockVal}`;
+            qvStock.className = stockVal <= 0 ? "card-stock low" : "card-stock";
+
+            const btnAdd = document.getElementById("qvBtnAgregar");
+            btnAdd.disabled = stockVal <= 0;
+            btnAdd.onclick = () => {
+                meterAlCarrito(p.codigo, (p.nombre || '').replace(/'/g, "\\'"), pPrecio);
+                cerrarQuickView();
+            };
+
+            document.getElementById("modalQuickView").classList.add("active");
+        }
+
+        function cerrarQuickView() {
+            document.getElementById("modalQuickView").classList.remove("active");
+        }
+
         function meterAlCarrito(codigo, nombre, precio) {
-            if(!sesionUsuario) { alert("Inicia sesión para poder estructurar tu carrito."); return; }
+            if(!sesionUsuario) { showToast("Inicia sesión para poder estructurar tu carrito.", "warning"); return; }
 
             const producto = dbProductos.find(p => p.codigo === codigo);
             const stockDisponible = producto && !isNaN(producto.stock) ? Number(producto.stock) : Infinity;
 
-            if(stockDisponible <= 0) { alert(`"${nombre}" ya no tiene existencias disponibles.`); return; }
+            if(stockDisponible <= 0) { showToast(`"${nombre}" ya no tiene existencias disponibles.`, "danger"); return; }
 
             if(carrito[codigo]) {
                 if(carrito[codigo].qty >= stockDisponible) {
-                    alert(`Solo hay ${stockDisponible} unidades disponibles de "${nombre}".`);
+                    showToast(`Solo hay ${stockDisponible} unidades disponibles de "${nombre}".`, "warning");
                     return;
                 }
                 carrito[codigo].qty++;
@@ -1035,6 +1678,8 @@
                 carrito[codigo] = { code: codigo, name: nombre, price: precio, qty: 1 };
             }
             actualizarGraficosCarrito();
+            aplicarEfectoRebote();
+            showToast(`"${nombre}" agregado al carrito.`, "success", 2000);
         }
 
         function modificarCantidadCarrito(codigo, cambio) {
@@ -1044,13 +1689,14 @@
                 const producto = dbProductos.find(p => p.codigo === codigo);
                 const stockDisponible = producto && !isNaN(producto.stock) ? Number(producto.stock) : Infinity;
                 if(carrito[codigo].qty >= stockDisponible) {
-                    alert(`Solo hay ${stockDisponible} unidades disponibles.`);
+                    showToast(`Solo hay ${stockDisponible} unidades disponibles.`, "warning");
                     return;
                 }
             }
             carrito[codigo].qty += cambio;
             if(carrito[codigo].qty <= 0) delete carrito[codigo];
             actualizarGraficosCarrito();
+            aplicarEfectoRebote();
         }
 
         function actualizarGraficosCarrito() {
@@ -1079,12 +1725,58 @@
             document.getElementById("lblTotalCart").innerText = `$${total.toFixed(2)}`;
             
             const cartBadge = document.getElementById("cartCounter");
+            const cartBadgeBottom = document.getElementById("cartCounterBottom");
+
             if(itemCount > 0) {
                 cartBadge.textContent = itemCount;
                 cartBadge.style.display = "flex";
+                if(cartBadgeBottom) {
+                    cartBadgeBottom.textContent = itemCount;
+                    cartBadgeBottom.style.display = "flex";
+                }
             } else {
                 cartBadge.style.display = "none";
+                if(cartBadgeBottom) cartBadgeBottom.style.display = "none";
             }
+        }
+
+        /* LÍNEA DE TIEMPO DE RASTREO */
+        function generarHtmlTimeline(estadoActual) {
+            const estNorm = normalizarTexto(estadoActual || "");
+            let pasoNum = 1; // 1: Recibido, 2: Preparación, 3: En Camino, 4: Entregado
+            
+            if (estNorm.includes("prepar") || estNorm.includes("proces")) {
+                pasoNum = 2;
+            } else if (estNorm.includes("camin") || estNorm.includes("ruta") || estNorm.includes("despach")) {
+                pasoNum = 3;
+            } else if (estNorm.includes("entreg") || estNorm.includes("complet") || estNorm.includes("finaliz")) {
+                pasoNum = 4;
+            }
+
+            let progressPct = ((pasoNum - 1) / 3) * 76;
+
+            return `
+                <div class="timeline-container">
+                    <div class="timeline-line-bg"></div>
+                    <div class="timeline-line-active" style="width: ${progressPct}%;"></div>
+                    <div class="timeline-step ${pasoNum >= 1 ? (pasoNum === 1 ? 'active' : 'completed') : ''}">
+                        <div class="step-icon">📝</div>
+                        <span>Recibido</span>
+                    </div>
+                    <div class="timeline-step ${pasoNum >= 2 ? (pasoNum === 2 ? 'active' : 'completed') : ''}">
+                        <div class="step-icon">📦</div>
+                        <span>Preparación</span>
+                    </div>
+                    <div class="timeline-step ${pasoNum >= 3 ? (pasoNum === 3 ? 'active' : 'completed') : ''}">
+                        <div class="step-icon">🛵</div>
+                        <span>En Camino</span>
+                    </div>
+                    <div class="timeline-step ${pasoNum >= 4 ? (pasoNum === 4 ? 'active' : 'completed') : ''}">
+                        <div class="step-icon">✅</div>
+                        <span>Entregado</span>
+                    </div>
+                </div>
+            `;
         }
 
         async function consultarRastreoInterno() {
@@ -1092,7 +1784,7 @@
             const pantalla = document.getElementById("panelStatusScreen");
             
             if(!folio) return;
-            pantalla.innerHTML = "Consultando base de datos...";
+            pantalla.innerHTML = `<div style="padding:10px;"><span class="spinner" style="border-top-color:var(--primary);"></span> Consultando base de datos...</div>`;
             
             try {
                 const response = await fetch(`${SCRIPT_URL}?action=pedidos&folio=${folio}`);
@@ -1100,13 +1792,15 @@
                 
                 if(data && data.length > 0) {
                     const p = data[0];
+                    const timelineHtml = generarHtmlTimeline(p.estado);
                     pantalla.innerHTML = `
                         <div style="text-align:left; margin-top:10px;">
                             <p><b>Sucursal:</b> ${p.sucursal || sucursalSeleccionada}</p>
                             <p><b>Paciente:</b> ${p.cliente}</p>
                             <p><b>Dirección:</b> ${p.domicilio}</p>
-                            <p><b>Estado:</b> <span style="color:var(--primary);">${p.estado}</span></p>
+                            <p><b>Estado:</b> <span style="color:var(--primary); font-weight:700;">${p.estado}</span></p>
                             <p><b>Pago:</b> ${p.metodo_pago || 'Efectivo'}</p>
+                            ${timelineHtml}
                         </div>
                     `;
                 } else {
@@ -1115,10 +1809,28 @@
             } catch(e) { pantalla.innerHTML = "Error de sincronización."; }
         }
 
+        function repetirPedido(folio) {
+            const guardadoLocal = localStorage.getItem('reorder_' + folio);
+            if(guardadoLocal) {
+                const carritoAnterior = JSON.parse(guardadoLocal);
+                Object.values(carritoAnterior).forEach(item => {
+                    if(carrito[item.code]) { carrito[item.code].qty += item.qty; }
+                    else { carrito[item.code] = item; }
+                });
+                actualizarGraficosCarrito();
+                aplicarEfectoRebote();
+                cerrarModalHistorial();
+                abrirCarrito();
+                showToast("Productos recuperados y añadidos exitosamente al carrito actual.", "success");
+            } else {
+                showToast("Los detalles de inventario exactos de este pedido no están guardados en este dispositivo para realizar la repetición automática.", "warning");
+            }
+        }
+
         async function cargarHistorialPedidos() {
             const cont = document.getElementById("historialPedidosContainer");
             if(!sesionUsuario) { cont.innerHTML = "Debes iniciar sesión para ver tu historial."; return; }
-            cont.innerHTML = "Cargando pedidos...";
+            cont.innerHTML = `<div style="padding:10px; text-align:center;"><span class="spinner" style="border-top-color:var(--primary);"></span> Cargando pedidos...</div>`;
             try {
                 const response = await fetch(`${SCRIPT_URL}?action=pedidos&correo=${sesionUsuario.correo}`);
                 const propios = await response.json();
@@ -1134,8 +1846,11 @@
                             <b style="color:var(--text-main);">${p.folio}</b>
                             <span style="color:var(--primary); font-weight:700; font-size:11px;">${p.estado}</span>
                         </div>
-                        <div class="historial-item-productos">${p.productos || ''}</div>
-                        <button class="btn" style="padding:4px 8px; font-size:10px; min-height:24px;" onclick="verEsteFolio('${p.folio}')">Ver rastreo</button>
+                        <div class="historial-item-productos" style="line-height: 1.4; margin: 4px 0 8px 0;">${p.productos || ''}</div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn" style="padding:4px 8px; font-size:10px; min-height:24px; flex:1;" onclick="verEsteFolio('${p.folio}')">Ver rastreo</button>
+                            <button class="btn btn-success" style="padding:4px 8px; font-size:10px; min-height:24px; flex:1;" onclick="repetirPedido('${p.folio}')">Volver a pedir</button>
+                        </div>
                     </div>
                 `).join("");
             } catch(e) { cont.innerHTML = "Error al cargar tu historial."; }
@@ -1143,26 +1858,48 @@
 
         function verEsteFolio(folio) {
             document.getElementById("txtRastreoFolio").value = folio;
-            abrirSidePanel();
+            cerrarModalHistorial();
+            abrirModalRastreo();
             consultarRastreoInterno();
         }
 
         async function procesarOrdenCompraFinal(e) {
+            if (!verificarHorarioOperacion()) {
+                showToast("Atención: El servicio de pedidos en línea está cerrado (Horario de atención: 9:00 AM a 7:00 PM).", "warning");
+                return;
+            }
+
             const nom = document.getElementById("orderNombre").value.trim();
             const dom = document.getElementById("orderDomicilio").value.trim();
             const pago = document.getElementById("orderMetodoPago").value;
+            const inputReceta = document.getElementById("orderReceta");
             
-            if(!nom || !dom) { alert("Completa los datos de despacho urgente."); return; }
-            if(Object.keys(carrito).length === 0) { alert("Tu carrito está vacío."); return; }
+            if(!nom || !dom) { showToast("Completa los datos de despacho urgente.", "warning"); return; }
+            if(Object.keys(carrito).length === 0) { showToast("Tu carrito está vacío.", "warning"); return; }
 
-            let arrProdStr = Object.values(carrito).map(x => `${x.name} (${x.qty}pz)`).join(", ");
+            let arrProdStr = Object.values(carrito).map(x => `• ${x.name} (${x.qty}pz)`).join("<br>");
             let totalGeneral = Object.values(carrito).reduce((a, b) => a + (b.price * b.qty), 0);
             let nuevoFolio = "FH-" + Math.floor(100000 + Math.random() * 900000);
+
+            let archivoBase64 = "";
+            if (inputReceta.files && inputReceta.files.length > 0) {
+                try {
+                    archivoBase64 = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(inputReceta.files[0]);
+                    });
+                } catch(error) {
+                    showToast("Ocurrió un error al cargar la receta médica.", "danger");
+                    return;
+                }
+            }
 
             const btnConfirm = e.target;
             try {
                 btnConfirm.disabled = true;
-                btnConfirm.innerText = "Procesando...";
+                btnConfirm.innerHTML = `<span class="spinner"></span> Procesando...`;
 
                 const payload = {
                     action: "crearPedido",
@@ -1174,7 +1911,8 @@
                     metodo_pago: pago,
                     total: totalGeneral,
                     sucursal: sucursalSeleccionada,
-                    carrito: Object.values(carrito)
+                    carrito: Object.values(carrito),
+                    receta: archivoBase64
                 };
 
                 const res = await fetch(SCRIPT_URL, {
@@ -1186,11 +1924,16 @@
                 
                 if(data.error) throw new Error(data.error);
 
-                alert("¡Pedido realizado con éxito!\nFOLIO: " + nuevoFolio + "\nSUCURSAL: " + sucursalSeleccionada);
+                showToast(`¡Pedido realizado con éxito!\nFOLIO: ${nuevoFolio}\nSUCURSAL: ${sucursalSeleccionada}`, "success");
+                
+                localStorage.setItem('reorder_' + nuevoFolio, JSON.stringify(carrito));
+                
                 document.getElementById("txtRastreoFolio").value = nuevoFolio;
                 construirGraficoTicket(nuevoFolio, nom, dom, totalGeneral);
                 carrito = {};
+                inputReceta.value = ""; 
                 actualizarGraficosCarrito();
+                abrirModalRastreo();
                 consultarRastreoInterno();
                 await descargarCatalogo();
                 
@@ -1198,7 +1941,7 @@
                 btnConfirm.innerText = "🚀 Confirmar y Enviar Pedido";
             } catch(err) { 
                 console.error(err);
-                alert("Error al procesar la orden: " + err.message); 
+                showToast("Error al procesar la orden: " + err.message, "danger"); 
                 btnConfirm.disabled = false;
                 btnConfirm.innerText = "🚀 Confirmar y Enviar Pedido";
             }
@@ -1218,9 +1961,10 @@
                 <p><b>DESTINO:</b> ${dom}</p>
                 <p><b>FECHA:</b> ${new Date().toLocaleString()}</p>
                 <hr style="border:1px dashed #000; margin:6px 0;">
+                <div style="font-weight: bold; margin-bottom: 4px;">PRODUCTOS:</div>
             `;
             Object.values(carrito).forEach(x => {
-                html += `<div style="font-size:12px;">${x.name} x ${x.qty} = $${(x.price*x.qty).toFixed(2)}</div>`;
+                html += `<div style="font-size:11px; margin-bottom: 2px;">• ${x.name} (${x.qty}pz) - $${(x.price*x.qty).toFixed(2)}</div>`;
             });
             html += `<hr style="border:1px dashed #000; margin:6px 0;"><h3 style="text-align:right;">TOTAL: $${total.toFixed(2)}</h3>`;
             ticket.innerHTML = html;
@@ -1241,16 +1985,28 @@
             p.style.display = (p.style.display === "none") ? "block" : "none";
         }
 
+        /* FUNCIONES DE MODALES FLOTANTES */
+        function abrirModalRastreo() { document.getElementById("modalRastreo").classList.add("active"); }
+        function cerrarModalRastreo() { document.getElementById("modalRastreo").classList.remove("active"); }
+        function abrirModalHistorial() { 
+            document.getElementById("modalHistorial").classList.add("active"); 
+            cargarHistorialPedidos();
+        }
+        function cerrarModalHistorial() { document.getElementById("modalHistorial").classList.remove("active"); }
         function abrirCarrito() { document.getElementById("modalCarrito").classList.add("active"); }
         function cerrarCarrito() { document.getElementById("modalCarrito").classList.remove("active"); }
-        function cerrarSidePanel() { document.getElementById("sidePanel").classList.remove("active"); }
-        function abrirSidePanel() { document.getElementById("sidePanel").classList.add("active"); }
 
         async function guardarDatosPerfilServidor(silente = false) {
             const tel = document.getElementById("txtPrefTelefono").value.trim();
             const dir = document.getElementById("txtPrefDireccion").value.trim();
             const fav = document.getElementById("txtPrefFavoritos").value.trim();
-            
+            const btn = document.getElementById("btnGuardarPerfil");
+
+            if(!silente && btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span class="spinner"></span> Guardando...`;
+            }
+
             try {
                 const payload = { action: "actualizarPerfil", correo: sesionUsuario.correo, telefono: tel, direccion: dir, favoritos: fav };
                 const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
@@ -1258,13 +2014,19 @@
                 
                 if (data.error) throw new Error(data.error);
 
-                if(!silente) alert("Perfil actualizado correctamente.");
+                if(!silente) showToast("Perfil actualizado correctamente.", "success");
                 sesionUsuario.telefono = tel;
                 sesionUsuario.direccion = dir;
                 sesionUsuario.favoritos = fav;
                 localStorage.setItem("farma_user", JSON.stringify(sesionUsuario));
                 autoacomodarCamposPerfil();
-            } catch(e) { if(!silente) alert("Error al actualizar perfil."); }
+            } catch(e) { if(!silente) showToast("Error al actualizar perfil.", "danger"); }
+            finally {
+                if(!silente && btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `💾 Guardar`;
+                }
+            }
         }
 
         function autoacomodarCamposPerfil() {
@@ -1288,6 +2050,7 @@
                 document.getElementById("checkoutAnonMessage").style.display = "block";
                 document.getElementById("btnPerfilToggle").style.display = "none";
                 document.getElementById("btnPedidos").style.display = "none";
+                document.getElementById("btnHistorialHeader").style.display = "none";
                 document.getElementById("panelPerfilCliente").style.display = "none";
                 document.getElementById("historialPedidosContainer").innerHTML = "Inicia sesión y presiona actualizar para ver tus pedidos.";
                 carrito = {};
@@ -1308,6 +2071,10 @@
         async function ejecutarIngresoBase() {
             const em = document.getElementById("loginEmail").value.trim();
             const pas = document.getElementById("loginPass").value.trim();
+            const btn = document.getElementById("btnEjecutarIngreso");
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="spinner"></span> Ingresando...`;
 
             try {
                 const res = await fetch(SCRIPT_URL, {
@@ -1317,21 +2084,29 @@
                 const data = await res.json();
 
                 if(data.error) {
-                    alert(data.error);
+                    showToast(data.error, "danger");
                 } else {
-                    alert("¡Bienvenido " + data.nombre + "!");
+                    showToast("¡Bienvenido " + data.nombre + "!", "success");
                     establecerSesion(data);
                     cerrarModalAuth();
                 }
-            } catch(e) { alert("Error al iniciar sesión."); }
+            } catch(e) { showToast("Error al iniciar sesión.", "danger"); }
+            finally {
+                btn.disabled = false;
+                btn.innerHTML = `Ingresar al Sistema`;
+            }
         }
 
         async function ejecutarRegistroBase() {
             const nom = document.getElementById("regNombre").value.trim();
             const em = document.getElementById("regEmail").value.trim();
             const pas = document.getElementById("regPass").value.trim();
+            const btn = document.getElementById("btnEjecutarRegistro");
             
-            if(!nom || !em || !pas) { alert("Completa todos los campos."); return; }
+            if(!nom || !em || !pas) { showToast("Completa todos los campos.", "warning"); return; }
+
+            btn.disabled = true;
+            btn.innerHTML = `<span class="spinner"></span> Registrando...`;
 
             try {
                 const res = await fetch(SCRIPT_URL, {
@@ -1342,10 +2117,14 @@
 
                 if(data.error) throw new Error(data.error);
 
-                alert("¡Cuenta creada exitosamente!");
+                showToast("¡Cuenta creada exitosamente!", "success");
                 establecerSesion(data);
                 cerrarModalAuth();
-            } catch(e) { alert("Error al registrarse: " + e.message); }
+            } catch(e) { showToast("Error al registrarse: " + e.message, "danger"); }
+            finally {
+                btn.disabled = false;
+                btn.innerHTML = `Crear Mi Cuenta`;
+            }
         }
 
         function establecerSesion(usr) {
@@ -1358,6 +2137,7 @@
             document.getElementById("checkoutAnonMessage").style.display = "none";
             document.getElementById("btnPerfilToggle").style.display = "block";
             document.getElementById("btnPedidos").style.display = "block";
+            document.getElementById("btnHistorialHeader").style.display = "block";
             autoacomodarCamposPerfil();
         }
 
